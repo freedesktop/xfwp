@@ -29,6 +29,7 @@ authorization from The Open Group.
 X Window System is a trademark of The Open Group.
 
 */
+/* $XFree86: xc/programs/xfwp/pm.h,v 1.5 2001/12/14 20:01:43 dawes Exp $ */
 
 #ifndef _PM_H
 #define _PM_H
@@ -64,6 +65,6 @@ doSetupPMListen(
     fd_set * rinit);
 
 extern void 
-doInstallIOErrorHandler ();
+doInstallIOErrorHandler (void);
 
 #endif /* _PM_H */

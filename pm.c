@@ -29,14 +29,30 @@ authorization from The Open Group.
 X Window System is a trademark of The Open Group.
 
 */
+/* $XFree86: xc/programs/xfwp/pm.c,v 1.8 2002/09/18 17:11:56 tsi Exp $ */
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h> /* strdup */
 #include <X11/Xos.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <netdb.h>
+
+#ifdef X_POSIX_C_SOURCE
+#define _POSIX_C_SOURCE X_POSIX_C_SOURCE
 #include <signal.h>
+#undef _POSIX_C_SOURCE
+#else
+#if defined(X_NOT_POSIX) || defined(_POSIX_SOURCE)
+#include <signal.h>
+#else
+#define _POSIX_SOURCE
+#include <signal.h>
+#undef _POSIX_SOURCE
+#endif
+#endif
+
 #include <X11/Xproto.h>
 
 #include <X11/ICE/ICElib.h>
@@ -335,8 +351,8 @@ void FWPprocessMessages(
 	(void) fprintf(stderr, "Proxy Manager reported ICE Error:\n");
 	(void) fprintf(stderr, "\tclass = 0x%x, offending minor opcode = %d\n",
 		       pMsg->errorClass, pMsg->offendingMinorOpcode);
-	(void) fprintf(stderr, "\tseverity = %d, sequence = %d\n",
-		       pMsg->severity, pMsg->offendingSequenceNum);
+	(void) fprintf(stderr, "\tseverity = %d, sequence = %ld\n",
+		       pMsg->severity, (long)pMsg->offendingSequenceNum);
 
 	IceDisposeCompleteMessage (iceConn, pStart);
 
@@ -514,7 +530,7 @@ MyIoErrorHandler (
 }
 
 void 
-doInstallIOErrorHandler ()
+doInstallIOErrorHandler (void)
 {
     IceIOErrorHandler default_handler;
 

@@ -29,6 +29,7 @@ authorization from The Open Group.
 X Window System is a trademark of The Open Group.
 
 */
+/* $XFree86: xc/programs/xfwp/io.c,v 1.11 2001/12/14 20:01:43 dawes Exp $ */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -51,9 +52,6 @@ X Window System is a trademark of The Open Group.
 #include "transport.h"
 #include "io.h"
 
-#ifdef X_NOT_STDC_ENV
-extern int errno;
-#endif
 
 /*
  * Error messages returned to clients who are denied access
@@ -215,8 +213,9 @@ doProcessWritables(
 	     * since we just wrote data to the conn_to fd, mark it as ready 
 	     * to check for reading when we go through select() the next time
 	     */
-	    if (client_conn_array[fd_counter]->conn_to != -1)
-		FD_SET(client_conn_array[fd_counter]->conn_to, rinit);
+	    if (client_conn_array[fd_counter] != NULL)
+		if (client_conn_array[fd_counter]->conn_to != -1)
+		    FD_SET(client_conn_array[fd_counter]->conn_to, rinit);
 	} /* end else no errors on write  */
     } else
     {
@@ -346,7 +345,7 @@ ProcessNewPMConnection (
      */
     retval = getpeername(temp_sock_fd, 
 			 (struct sockaddr*)&temp_sockaddr_in, 
-			 &addrlen);
+			 (void *)&addrlen);
     if (retval)
     {
         IceCloseConnection(new_ice_conn);
@@ -370,7 +369,7 @@ ProcessNewPMConnection (
          * close the PM connection 
          * 
          */
-        (void) fprintf(stderr, "The Proxy Manager failed the configuration check\n");
+        (void) fprintf(stderr, "PM failed config check\n");
         IceCloseConnection(new_ice_conn);
         return;
     }
@@ -460,7 +459,7 @@ ProcessPMInput (
 		    break;
 
 		case IceProcessMessagesIOError:
-		     IceProcessMessagesConnectionClosed:
+		case IceProcessMessagesConnectionClosed:
 
 		    if (process_status == IceProcessMessagesIOError)
 			/*
@@ -550,7 +549,7 @@ ProcessNewClientConnection (
 
     if ((temp_sock_fd = accept(accept_fd,
                                (struct sockaddr *) &temp_sockaddr_in, 
-	 		       &temp_sock_len)) < 0)
+	 		       (void *)&temp_sock_len)) < 0)
     {
 	(void) fprintf (stderr, "accept call for a client failed\n");
 	return;
@@ -1216,9 +1215,9 @@ doProcessReadables(
     if (!client_conn_array[fd_counter])
     {
 	/*
-	 * This can happen if the client was marked as closed by
-	 * doProcessWritables.
+	 * Impossible - right?
 	 */
+	(void) fprintf (stderr, "input processing error\n");
 	return;
     }
 

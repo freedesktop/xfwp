@@ -29,6 +29,7 @@ authorization from The Open Group.
 X Window System is a trademark of The Open Group.
 
 */
+/* $XFree86: xc/programs/xfwp/transport.c,v 1.7 2001/12/14 20:01:43 dawes Exp $ */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -39,10 +40,6 @@ X Window System is a trademark of The Open Group.
 #include <netdb.h>
 
 #include <X11/Xfuncs.h>		/* Need for bzero() */
-
-#ifdef X_NOT_STDC_ENV
-extern int errno;
-#endif
 
 #include <X11/ICE/ICElib.h>	/* Need typedef for Bool */
 
