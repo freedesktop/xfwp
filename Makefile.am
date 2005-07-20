@@ -21,8 +21,8 @@
 
 bin_PROGRAMS = xfwp
 
-xfwp_CFLAGS = $(DEP_CFLAGS)
-xfwp_LDADD = $(DEP_LIBS)
+xfwp_CFLAGS = $(XFWP_CFLAGS)
+xfwp_LDADD = $(XFWP_LIBS)
 
 xfwp_SOURCES =	\
         io.c \

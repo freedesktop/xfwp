@@ -32,8 +32,8 @@ AC_PROG_CC
 AC_PROG_INSTALL
 
 # Checks for pkg-config packages
-PKG_CHECK_MODULES(DEP, x11 ice xproxymngproto)
-AC_SUBST(DEP_CFLAGS)
-AC_SUBST(DEP_LIBS)
+PKG_CHECK_MODULES(XFWP, x11 ice xproxymngproto)
+AC_SUBST(XFWP_CFLAGS)
+AC_SUBST(XFWP_LIBS)
 
 AC_OUTPUT([Makefile])
