@@ -36,6 +36,6 @@ xfwp_SOURCES =	\
         xfwp.c \
         xfwp.h
 
-dist_man_MANS = \
+dist_man1_MANS = \
         xfwp.man
 
