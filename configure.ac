@@ -36,6 +36,10 @@ PKG_CHECK_MODULES(XFWP, x11 ice xproxymngproto)
 AC_SUBST(XFWP_CFLAGS)
 AC_SUBST(XFWP_LIBS)
 
+# Check for libraries needed for TCP sockets on some platforms
+# and defines like BSD44SOCKETS needed on others
+XTRANS_TCP_FLAGS
+
 XORG_MANPAGE_SECTIONS
 XORG_RELEASE_VERSION
 

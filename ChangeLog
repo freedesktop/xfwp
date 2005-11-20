@@ -1,3 +1,9 @@
+2005-11-19  Alan Coopersmith  <alan.coopersmith@sun.com>
+
+	* configure.ac: 
+	Add XTRANS_TCP_FLAGS macro to get needed #defines and
+	libraries for TCP code on various platforms.
+
 2005-10-18  Kevin E. Martin  <kem-at-freedesktop-dot-org>
 
 	* configure.ac:
