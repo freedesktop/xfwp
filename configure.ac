@@ -26,13 +26,30 @@ AC_INIT(xfwp,[1.0.1], [https://bugs.freedesktop.org/enter_bug.cgi?product=xorg],
 AM_INIT_AUTOMAKE([dist-bzip2])
 AM_MAINTAINER_MODE
 
+# Require xorg-macros: XORG_CWARNFLAGS, XORG_CHANGELOG
+m4_ifndef([XORG_MACROS_VERSION], [AC_FATAL([must install xorg-macros 1.2 or later before running autoconf/autogen])])
+XORG_MACROS_VERSION(1.2)
+
 AM_CONFIG_HEADER(config.h)
 
 AC_PROG_CC
 AC_PROG_INSTALL
 
+XORG_CWARNFLAGS
+
+AC_CANONICAL_HOST
+case $host_os in
+    linux*|gnu*|*-gnu)
+	OS_CFLAGS="-D_XOPEN_SOURCE -D_BSD_SOURCE"
+	;;
+    *)
+	OS_CFLAGS=
+	;;
+esac
+
 # Checks for pkg-config packages
 PKG_CHECK_MODULES(XFWP, x11 ice xproxymngproto)
+XFWP_CFLAGS="$CWARNFLAGS $XFWP_CFLAGS $OS_CFLAGS"
 AC_SUBST(XFWP_CFLAGS)
 AC_SUBST(XFWP_LIBS)
 
@@ -42,5 +59,6 @@ XTRANS_TCP_FLAGS
 
 XORG_MANPAGE_SECTIONS
 XORG_RELEASE_VERSION
+XORG_CHANGELOG
 
 AC_OUTPUT([Makefile])

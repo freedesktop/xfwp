@@ -18,3 +18,7 @@ stamp-h1
 xfwp
 xfwp.1
 *~
+*.o
+xfwp-*.tar.*
+ChangeLog
+tags
