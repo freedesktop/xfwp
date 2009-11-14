@@ -21,7 +21,7 @@
 
 bin_PROGRAMS = xfwp
 
-AM_CFLAGS = $(XFWP_CFLAGS)
+AM_CFLAGS = $(CWARNFLAGS) $(XFWP_CFLAGS) $(OS_CFLAGS)
 xfwp_LDADD = $(XFWP_LIBS)
 
 xfwp_SOURCES =	\
@@ -69,7 +69,7 @@ MAN_SUBSTS = \
 SUFFIXES = .$(APP_MAN_SUFFIX) .man
 
 .man.$(APP_MAN_SUFFIX):
-	sed $(MAN_SUBSTS) < $< > $@
+	$(AM_V_GEN)$(SED) $(MAN_SUBSTS) < $< > $@
 
 EXTRA_DIST += ChangeLog
 MAINTAINERCLEANFILES = ChangeLog
