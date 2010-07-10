@@ -47,7 +47,7 @@ case $host_os in
 esac
 
 # Checks for pkg-config packages
-PKG_CHECK_MODULES(XFWP, x11 ice xproxymngproto)
+PKG_CHECK_MODULES(XFWP, xproto ice xproxymngproto)
 AC_SUBST(XFWP_CFLAGS)
 AC_SUBST(XFWP_LIBS)
 
