@@ -27,9 +27,6 @@ AM_INIT_AUTOMAKE([dist-bzip2])
 AM_MAINTAINER_MODE
 AM_CONFIG_HEADER(config.h)
 
-AC_PROG_CC
-AC_PROG_INSTALL
-
 # Require X.Org macros 1.8 or later for MAN_SUBSTS set by XORG_MANPAGE_SECTIONS
 m4_ifndef([XORG_MACROS_VERSION],
 	  [m4_fatal([must install xorg-macros 1.8 or later before running autoconf/autogen])])
@@ -48,8 +45,6 @@ esac
 
 # Checks for pkg-config packages
 PKG_CHECK_MODULES(XFWP, xproto ice xproxymngproto)
-AC_SUBST(XFWP_CFLAGS)
-AC_SUBST(XFWP_LIBS)
 
 # Check for libraries needed for TCP sockets on some platforms
 # and defines like BSD44SOCKETS needed on others
