@@ -55,4 +55,5 @@ PKG_CHECK_MODULES(XFWP, xproto ice xproxymngproto)
 # and defines like BSD44SOCKETS needed on others
 XTRANS_TCP_FLAGS
 
-AC_OUTPUT([Makefile])
+AC_CONFIG_FILES([Makefile])
+AC_OUTPUT
