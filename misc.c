@@ -52,7 +52,7 @@ static Bool HaveSitePolicy = 0;
 /*ARGSUSED*/
 static void
 BadSyntax(
-    char *msg,
+    const char *msg,
     int line)
 {
 #ifdef DEBUG

@@ -57,7 +57,7 @@ X Window System is a trademark of The Open Group.
 /*
  * Error messages returned to clients who are denied access
  */
-static char * server_reason[2] = {
+static const char * server_reason[2] = {
 	"Authentication rejected",
 	"permission denied"
 };
@@ -693,7 +693,7 @@ ProcessClientWaiting (
     fd_set			* winit,
     int				client_idx)
 {
-    char *			conn_auth_name = "XC-QUERY-SECURITY-1";
+    const char *		conn_auth_name = "XC-QUERY-SECURITY-1";
     int 			conn_auth_namelen;
     int				conn_auth_datalen;
     xConnClientPrefix		client;

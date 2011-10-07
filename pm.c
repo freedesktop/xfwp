@@ -98,7 +98,7 @@ void FWPprocessMessages(
       struct sockaddr_in	server_sockaddr_in;
       struct sockaddr_in	dummy_sockaddr_in;
       char *			server_name_base;
-      char *			config_failure = "unrecognized server or permission denied";
+      const char *		config_failure = "unrecognized server or permission denied";
       char *			tmp_str;
       int			rule_number = -1;
       char *			colon;
