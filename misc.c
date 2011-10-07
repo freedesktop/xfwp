@@ -98,7 +98,7 @@ static void
 BadMalloc(
     int line)
 {
-    (void) fprintf(stderr, "Error: memory exhaused at line %d\n", line);
+    (void) fprintf(stderr, "Error: memory exhausted at line %d\n", line);
 }
 
 static void

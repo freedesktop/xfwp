@@ -148,7 +148,7 @@ doSetupRemClientListen(
       listen_port++;
 
       /*
-       * Cann't keep going forever.
+       * Can't keep going forever.
        *
        * Why 65535 - it's the same value used by the LBXProxy.
        */

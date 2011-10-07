@@ -255,7 +255,7 @@ void FWPprocessMessages(
       /*
        * Before checking to see if you already have a PM connection
        * request for this server, make serverAddress a
-       * FQDN so that synonomous names like oregon:0 and oregon.com:0
+       * FQDN so that synonymous names like oregon:0 and oregon.com:0
        * will be recognized as the same Xserver.  If this server
        * already exists, don't allocate another listen port for it -
        * use the already allocated one
@@ -457,7 +457,7 @@ doSetupPMListen(
 					256,
 					errormsg))
   {
-    (void) fprintf(stderr, "IceListenForWellKnowConnections error: %s\n",
+    (void) fprintf(stderr, "IceListenForWellKnownConnections error: %s\n",
 		   errormsg);
     return 0;
   }

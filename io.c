@@ -402,8 +402,8 @@ ProcessNewPMConnection (
      * Set the readables select() to listen for a readable on this
      * fd; remember, we're not interested in pm writables, since
      * all the negotiation is handled inside this routine; adjust
-     * the nfds (must do that everytime we get a new socket to
-     * select() on), and then contnue processing current selections
+     * the nfds (must do that every time we get a new socket to
+     * select() on), and then continue processing current selections
      */
     FD_SET(temp_sock_fd, rinit);
     *nfds = max(*nfds, temp_sock_fd + 1);
@@ -638,7 +638,7 @@ ProcessNewClientConnection (
     if ((client_conn_array[server_fd] = (struct client_conn_buf *)
 	malloc(sizeof (struct client_conn_buf))) == NULL)
     {
-	(void) fprintf (stderr, "malloc - server connectioin buffer\n");
+	(void) fprintf (stderr, "malloc - server connection buffer\n");
 	return;
     }
     bzero (client_conn_array[server_fd], sizeof (struct client_conn_buf));
