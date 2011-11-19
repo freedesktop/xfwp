@@ -266,7 +266,7 @@ doConfigPermitDeny(
   config_file_data = config_info->config_file_data;
 
   if ((config_file_data[line_number]->permit_deny =
-       (char *) malloc (strlen(result) + 1)) == NULL)
+       malloc (strlen(result) + 1)) == NULL)
   {
     (void) fprintf(stderr, "malloc - config rule (permit/deny keyword)\n");
     return 0;
@@ -290,7 +290,7 @@ doConfigPermitDeny(
     if (doVerifyHostMaskToken(token))
     {
       if ((config_file_data[line_number]->source_hostname =
-	      (char *) malloc (strlen(result) + 1)) == NULL)
+	      malloc (strlen(result) + 1)) == NULL)
       {
 	(void) fprintf(stderr, "malloc - config rule (source host)\n");
 	return 0;
@@ -321,7 +321,7 @@ doConfigPermitDeny(
     if (doVerifyHostMaskToken(token))
     {
       if ((config_file_data[line_number]->source_netmask =
-		(char *) malloc (strlen(result) + 1)) == NULL)
+		malloc (strlen(result) + 1)) == NULL)
       {
 	(void) fprintf(stderr, "malloc - config rule (source netmask)\n");
 	return 0;
@@ -349,7 +349,7 @@ doConfigPermitDeny(
     if (doVerifyHostMaskToken(token))
     {
       if ((config_file_data[line_number]->dest_hostname =
-		(char *) malloc (strlen(result) + 1)) == NULL)
+		malloc (strlen(result) + 1)) == NULL)
       {
 	(void) fprintf(stderr, "malloc - config rule (destination host)\n");
 	return 0;
@@ -377,7 +377,7 @@ doConfigPermitDeny(
     if (doVerifyHostMaskToken(token))
     {
       if ((config_file_data[line_number]->dest_netmask =
-		(char *) malloc (strlen(result) + 1)) == NULL)
+		malloc (strlen(result) + 1)) == NULL)
       {
 	(void) fprintf(stderr, "malloc - config rule (destination mask)\n");
 	return 0;
@@ -402,7 +402,7 @@ doConfigPermitDeny(
     if (!strcmp("eq", result))
     {
       if ((config_file_data[line_number]->operator =
-		(char *) malloc (strlen(result) + 1)) == NULL)
+		malloc (strlen(result) + 1)) == NULL)
       {
 	(void) fprintf(stderr, "malloc - config rule (op)\n");
 	return 0;
@@ -427,7 +427,7 @@ doConfigPermitDeny(
         (!strncmp("cd", result, 2)))
     {
       if ((config_file_data[line_number]->service =
-		(char *) malloc (strlen(result) + 1)) == NULL)
+		malloc (strlen(result) + 1)) == NULL)
       {
 	(void) fprintf(stderr, "malloc - config rule (service)\n");
 	return 0;
@@ -1228,7 +1228,7 @@ doCheckServerList(
 	/*
 	 * allocate and return the listen_port_string
 	 */
-	if ((*listen_port_string = (char *) malloc
+	if ((*listen_port_string = malloc
 	    (strlen(server_array[list_counter]->listen_port_string) + 1))
 		== NULL)
 	{
@@ -1396,7 +1396,7 @@ doProcessInputArgs (
 #endif
 #endif
 
-  client_conn_array = (struct client_conn_buf **)
+  client_conn_array =
      malloc (config_info->num_client_conns * sizeof (struct client_conn_buf *));
   if (!client_conn_array)
   {
@@ -1406,7 +1406,7 @@ doProcessInputArgs (
 
   if (!config_info->num_pm_conns)
     config_info->num_pm_conns = MAX_PM_CONNS;
-  pm_conn_array = (struct pm_conn_buf **)
+  pm_conn_array =
      malloc (config_info->num_client_conns * sizeof (struct pm_conn_buf *));
   if (!pm_conn_array)
   {

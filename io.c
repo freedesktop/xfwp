@@ -87,10 +87,10 @@ RemoveFDFromServerListenArray (
              FD_CLR (server_array[i]->client_listen_fd, rinit);
 	     (void) close (server_array[i]->client_listen_fd);
 	     if (server_array[i]->x_server_hostport)
-		 free ((char *) server_array[i]->x_server_hostport);
+		 free (server_array[i]->x_server_hostport);
 	     if (server_array[i]->listen_port_string)
-		 free ((char *) server_array[i]->listen_port_string);
-	     free ((char *) server_array[i]);
+		 free (server_array[i]->listen_port_string);
+	     free (server_array[i]);
 	     server_array[i] = NULL;
 	     break;
 	 }
@@ -383,8 +383,7 @@ ProcessNewPMConnection (
      * pm_conn_array; this saves us much troublesome linked-list
      * management!]
      */
-    if ((pm_conn_array[pm_idx] =
-	    (struct pm_conn_buf *) malloc(sizeof(struct pm_conn_buf))) == NULL)
+    if ((pm_conn_array[pm_idx] = malloc(sizeof(struct pm_conn_buf))) == NULL)
     {
         (void) fprintf (stderr, "malloc - PM connection object\n");
         return;
@@ -608,7 +607,7 @@ ProcessNewClientConnection (
      * If configured authorization succeeds, go ahead and
      * allocate a client_conn_buf struct for client connection
      */
-    if ((client_conn_array[temp_sock_fd] = (struct client_conn_buf *)
+    if ((client_conn_array[temp_sock_fd] =
 	    malloc(sizeof (struct client_conn_buf))) == NULL)
     {
 	(void) fprintf (stderr, "malloc - client connection buffer\n");
@@ -635,7 +634,7 @@ ProcessNewClientConnection (
      * allocate a buffer for the X server connection
      * and create the association between client and server
      */
-    if ((client_conn_array[server_fd] = (struct client_conn_buf *)
+    if ((client_conn_array[server_fd] =
 	malloc(sizeof (struct client_conn_buf))) == NULL)
     {
 	(void) fprintf (stderr, "malloc - server connection buffer\n");
@@ -756,10 +755,10 @@ ProcessClientWaiting (
 
     bufP = client_conn_array[idx]->writebuf;
 
-    memcpy(bufP, (char *) &client, sizeof(client));
+    memcpy(bufP, &client, sizeof(client));
     bufP += sizeof(client);
 
-    memcpy(bufP, (char *) conn_auth_name, conn_auth_namelen);
+    memcpy(bufP, conn_auth_name, conn_auth_namelen);
     bufP += conn_auth_namelen;
 
     bzero(bufP, name_remainder);
@@ -1009,7 +1008,7 @@ ProcessServerReply (
 		 * allocate the padded buffer
 		 */
 		if ((server_reason_padded =
-		     (char *) malloc (server_reason_len +
+		     malloc (server_reason_len +
 				      server_reason_remainder)) == NULL)
 		{
 		    (void) fprintf (stderr, "malloc - server reason\n");
@@ -1048,10 +1047,10 @@ ProcessServerReply (
 		/*
 		 * load the padded reason
 		 */
-		bzero((char *) server_reason_padded,
+		bzero(server_reason_padded,
 		       server_reason_len + server_reason_remainder);
-		memcpy((char *) server_reason_padded,
-		       (char *) server_reason
+		memcpy(server_reason_padded,
+		       server_reason
 			    [(int) client_conn_array[client_fd]->readbuf[0]],
 		       server_reason_len);
 		/*
@@ -1059,13 +1058,12 @@ ProcessServerReply (
 		 * be sent to the client next time the writables are
 		 * processed (again, to avoid blocking)
 		 */
-		memcpy((char *) client_conn_array[client_fd]->readbuf,
-		       (char *) &prefix,
+		memcpy(client_conn_array[client_fd]->readbuf,
+		       &prefix,
 		       sizeof(prefix));
 
-		memcpy((char *) client_conn_array[client_fd]->readbuf +
-			   sizeof(prefix),
-		       (char *) server_reason_padded,
+		memcpy(client_conn_array[client_fd]->readbuf + sizeof(prefix),
+		       server_reason_padded,
 		       server_reason_len + server_reason_remainder);
 
 		client_conn_array[client_fd]->rbytes = sizeof(prefix) +

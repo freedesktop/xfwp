@@ -159,7 +159,7 @@ void FWPprocessMessages(
       if (authLen > 0)
       {
         EXTRACT_STRING (pData, swap, authName);
-        authData = (char *) malloc (authLen);
+        authData = malloc (authLen);
         memcpy (authData, pData, authLen);
       }
 #ifdef DEBUG
@@ -201,7 +201,7 @@ void FWPprocessMessages(
       }
       memset(&server_sockaddr_in, 0, sizeof(server_sockaddr_in));
       memset(&dummy_sockaddr_in, 0, sizeof(dummy_sockaddr_in));
-      memcpy((char *) &server_sockaddr_in.sin_addr,
+      memcpy(&server_sockaddr_in.sin_addr,
 	     hostptr->h_addr,
 	     hostptr->h_length);
 
@@ -211,7 +211,7 @@ void FWPprocessMessages(
        * NOTE:  source configuration will always match (see XFWP man
        * page) unless sysadmin explicitly chooses to deny
        */
-      memcpy((char *) &dummy_sockaddr_in.sin_addr,
+      memcpy(&dummy_sockaddr_in.sin_addr,
 	     hostptr->h_addr,
 	     hostptr->h_length);
 
@@ -270,7 +270,7 @@ void FWPprocessMessages(
 	  *colon = ':';
 
 	  if (hostent && hostent->h_name) {
-	      tmpAddress = (char *) malloc (strlen (hostent->h_name) +
+	      tmpAddress = malloc (strlen (hostent->h_name) +
 					    strlen (colon) + 1);
 	      (void) sprintf (tmpAddress, "%s%s", hostent->h_name, colon);
 	      serverAddress = tmpAddress;
@@ -411,8 +411,7 @@ FWPprotocolSetupProc(
    * IceProcessMessages()
    */
   struct clientDataStruct * 	client_data;
-  if ((client_data = (struct clientDataStruct *)
-		     malloc (sizeof (struct clientDataStruct))) == NULL)
+  if ((client_data = malloc (sizeof (struct clientDataStruct))) == NULL)
   {
     (void) fprintf(stderr, "malloc - client data object\n");
     return (0);
@@ -465,7 +464,7 @@ doSetupPMListen(
   /*
    * Create space for pm_listen_array
    */
-  *pm_listen_array = (int *) malloc (num_fds_returned * sizeof (int *));
+  *pm_listen_array = malloc (num_fds_returned * sizeof (int *));
   if (!pm_listen_array)
   {
     (void) fprintf (stderr, "malloc - pm_listen_array\n");

@@ -86,8 +86,7 @@ doSetupRemClientListen(
    * can't use the PM connection fd as an index into this array, since
    * there could be multiple servers per PM connection
    */
-  if ((server_array[this_server] =
-      (struct server_list *) malloc(sizeof(struct server_list))) == NULL)
+  if ((server_array[this_server] = malloc(sizeof(struct server_list))) == NULL)
   {
     (void) fprintf(stderr,"malloc - server_array\n");
     return FAILURE;
@@ -189,8 +188,7 @@ doSetupRemClientListen(
    * string equals address of host on which FWP is running
    * plus ":<listen_port - X_SERVER_PORT_BASE> (up to xxx)"
    */
-  if (((*listen_port_string) =
-	(char *) malloc (strlen(hostname) + 10)) == NULL)
+  if (((*listen_port_string) = malloc (strlen(hostname) + 10)) == NULL)
   {
     (void) fprintf(stderr, "malloc - proxy address\n");
     goto returnFailure;
