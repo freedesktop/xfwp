@@ -78,22 +78,6 @@ MallocFailed(void)
     exit(1);
 }
 
-static char*
-Realloc(
-    char *p,
-    int s)
-{
-    if (!p)
-	p = malloc(s);
-    else
-	p = realloc(p, s);
-
-    if (!p)
-	MallocFailed();
-
-    return p;
-}
-
 static void
 BadMalloc(
     int line)
@@ -215,7 +199,7 @@ doInitNewRule(
   if (rule_number == config_info->lines_allocated)
   {
       if ((config_info->config_file_data = (struct config_line**)
-	       Realloc((char*)config_info->config_file_data,
+	       realloc((char*)config_info->config_file_data,
 	    	       (config_info->lines_allocated += ADD_LINES) *
 		       sizeof(struct config_line *))) == NULL)
       {
