@@ -620,15 +620,18 @@ ProcessNewClientConnection (
      * the log data struct will go out of scope before we check the
      * server security extension or other loggable events)
      */
-    client_conn_array[temp_sock_fd]->source =
-	  Malloc(strlen(inet_ntoa(temp_sockaddr_in.sin_addr)) + 1);
-    client_conn_array[temp_sock_fd]->destination =
-	  Malloc(strlen(inet_ntoa(server_sockaddr_in.sin_addr)) + 1);
-
-    (void) strcpy(client_conn_array[temp_sock_fd]->source,
-	          inet_ntoa(temp_sockaddr_in.sin_addr));
-    (void) strcpy(client_conn_array[temp_sock_fd]->destination,
-	          inet_ntoa(server_sockaddr_in.sin_addr));
+    if ((client_conn_array[temp_sock_fd]->source =
+	 strdup(inet_ntoa(temp_sockaddr_in.sin_addr))) == NULL)
+    {
+	(void) fprintf (stderr, "malloc - client source addr\n");
+	return;
+    }
+    if ((client_conn_array[temp_sock_fd]->destination =
+	 strdup(inet_ntoa(server_sockaddr_in.sin_addr))) == NULL)
+    {
+	(void) fprintf (stderr, "malloc - client dest addr\n");
+	return;
+    }
 
     /*
      * allocate a buffer for the X server connection

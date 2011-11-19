@@ -146,7 +146,7 @@ doConfigRequireDisallow(
       return 1;
   }
 
-  SitePolicies[SitePolicyCount] = malloc(strlen(result) + 1);
+  SitePolicies[SitePolicyCount] = strdup(result);
 
   if (!SitePolicies[SitePolicyCount])
   {
@@ -154,7 +154,7 @@ doConfigRequireDisallow(
       return 1;
   }
 
-  strcpy(SitePolicies[SitePolicyCount++], result);
+  SitePolicyCount++;
 
 #ifdef DEBUG
   (void) fprintf(stderr, "%s %s", permit ? "requiring" : "disallowing", result);
@@ -249,13 +249,11 @@ doConfigPermitDeny(
 
   config_file_data = config_info->config_file_data;
 
-  if ((config_file_data[line_number]->permit_deny =
-       malloc (strlen(result) + 1)) == NULL)
+  if ((config_file_data[line_number]->permit_deny = strdup(result)) == NULL)
   {
     (void) fprintf(stderr, "malloc - config rule (permit/deny keyword)\n");
     return 0;
   }
-  strcpy(config_file_data[line_number]->permit_deny, result);
 
 #ifdef DEBUG
   (void) fprintf(stderr,
@@ -273,13 +271,12 @@ doConfigPermitDeny(
 
     if (doVerifyHostMaskToken(token))
     {
-      if ((config_file_data[line_number]->source_hostname =
-	      malloc (strlen(result) + 1)) == NULL)
+      if ((config_file_data[line_number]->source_hostname = strdup(result))
+	  == NULL)
       {
 	(void) fprintf(stderr, "malloc - config rule (source host)\n");
 	return 0;
       }
-      strcpy(config_file_data[line_number]->source_hostname, result);
 #ifdef DEBUG
       (void) fprintf(stderr,
 	   	     "second token = %s\n",
@@ -304,13 +301,12 @@ doConfigPermitDeny(
 
     if (doVerifyHostMaskToken(token))
     {
-      if ((config_file_data[line_number]->source_netmask =
-		malloc (strlen(result) + 1)) == NULL)
+      if ((config_file_data[line_number]->source_netmask = strdup(result))
+	  == NULL)
       {
 	(void) fprintf(stderr, "malloc - config rule (source netmask)\n");
 	return 0;
       }
-      strcpy(config_file_data[line_number]->source_netmask, result);
 #ifdef DEBUG
       (void) fprintf(stderr,
 	   	     "third token = %s\n",
@@ -332,13 +328,12 @@ doConfigPermitDeny(
 
     if (doVerifyHostMaskToken(token))
     {
-      if ((config_file_data[line_number]->dest_hostname =
-		malloc (strlen(result) + 1)) == NULL)
+      if ((config_file_data[line_number]->dest_hostname = strdup(result))
+	  == NULL)
       {
 	(void) fprintf(stderr, "malloc - config rule (destination host)\n");
 	return 0;
       }
-      strcpy(config_file_data[line_number]->dest_hostname, result);
 #ifdef DEBUG
       (void) fprintf(stderr,
 	   	     "fourth token = %s\n",
@@ -360,13 +355,12 @@ doConfigPermitDeny(
 
     if (doVerifyHostMaskToken(token))
     {
-      if ((config_file_data[line_number]->dest_netmask =
-		malloc (strlen(result) + 1)) == NULL)
+      if ((config_file_data[line_number]->dest_netmask = strdup(result))
+	  == NULL)
       {
 	(void) fprintf(stderr, "malloc - config rule (destination mask)\n");
 	return 0;
       }
-      strcpy(config_file_data[line_number]->dest_netmask, result);
 #ifdef DEBUG
       (void) fprintf(stderr,
 	   	     "fifth token = %s\n",
@@ -385,13 +379,11 @@ doConfigPermitDeny(
   {
     if (!strcmp("eq", result))
     {
-      if ((config_file_data[line_number]->operator =
-		malloc (strlen(result) + 1)) == NULL)
+      if ((config_file_data[line_number]->operator = strdup(result)) == NULL)
       {
 	(void) fprintf(stderr, "malloc - config rule (op)\n");
 	return 0;
       }
-      strcpy(config_file_data[line_number]->operator, result);
 #ifdef DEBUG
       (void) fprintf(stderr,
 	      	     "sixth token = %s\n",
@@ -410,13 +402,11 @@ doConfigPermitDeny(
         (!strncmp("fp", result, 2)) ||
         (!strncmp("cd", result, 2)))
     {
-      if ((config_file_data[line_number]->service =
-		malloc (strlen(result) + 1)) == NULL)
+      if ((config_file_data[line_number]->service = strdup(result)) == NULL)
       {
 	(void) fprintf(stderr, "malloc - config rule (service)\n");
 	return 0;
       }
-      strcpy(config_file_data[line_number]->service, result);
 #ifdef DEBUG
       (void) fprintf(stderr,
 	      	     "seventh token = %s\n",
@@ -1212,15 +1202,12 @@ doCheckServerList(
 	/*
 	 * allocate and return the listen_port_string
 	 */
-	if ((*listen_port_string = malloc
-	    (strlen(server_array[list_counter]->listen_port_string) + 1))
-		== NULL)
+	if ((*listen_port_string =
+	     strdup(server_array[list_counter]->listen_port_string)) == NULL)
 	{
     	  (void) fprintf(stderr, "malloc - listen_port_string\n");
 	  return FAILURE;
 	}
-        strcpy(*listen_port_string,
-	       server_array[list_counter]->listen_port_string);
         return SUCCESS;
       }
     }
@@ -1300,8 +1287,11 @@ doProcessInputArgs (
           break_flag = 1;
 	  break;
         }
-	config_info->pm_listen_port = Malloc(strlen(argv[arg_counter+1])+1);
-	strcpy(config_info->pm_listen_port, argv[arg_counter + 1]);
+	if ((config_info->pm_listen_port = strdup(argv[arg_counter+1])) == NULL)
+	{
+	  fprintf(stderr, "malloc - argument -pmport\n");
+	  exit(1);
+	}
       }
       else if (!strcmp("-max_pm_conns", argv[arg_counter]))
       {
@@ -1328,8 +1318,12 @@ doProcessInputArgs (
           break_flag = 1;
           break;
         }
-        config_info->config_file_path = Malloc(strlen(argv[arg_counter+1])+1);
-	strcpy(config_info->config_file_path, argv[arg_counter + 1]);
+        if ((config_info->config_file_path = strdup(argv[arg_counter+1]))
+	    == NULL)
+	{
+	  fprintf(stderr, "malloc - argument -config\n");
+	  exit(1);
+	}
       }
       else if (!strcmp("-verify", argv[arg_counter]))
       {
@@ -1342,8 +1336,11 @@ doProcessInputArgs (
           break_flag = 1;
           break;
         }
-        config_info->log_file_path = Malloc(strlen(argv[arg_counter+1])+1);
-        strcpy(config_info->log_file_path, argv[arg_counter + 1]);
+        if ((config_info->log_file_path = strdup(argv[arg_counter+1])) == NULL)
+	{
+	  fprintf(stderr, "malloc - argument -logfile\n");
+	  exit(1);
+	}
       }
       else if (!strcmp("-loglevel", argv[arg_counter]))
       {
@@ -1419,8 +1416,12 @@ doProcessInputArgs (
     config_info->client_data_timeout = CLIENT_DATA_TIMEOUT_DEFAULT;
   if (config_info->pm_listen_port == NULL)
   {
-    config_info->pm_listen_port = Malloc(strlen(PM_LISTEN_PORT) + 1);
-    strcpy(config_info->pm_listen_port, PM_LISTEN_PORT);
+    config_info->pm_listen_port = strdup(PM_LISTEN_PORT);
+    if (!config_info->pm_listen_port)
+    {
+      (void) fprintf (stderr, "malloc - PM listen port\n");
+      exit (1);
+    }
   }
 }
 
