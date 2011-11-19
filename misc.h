@@ -51,10 +51,6 @@ X Window System is a trademark of The Open Group.
 #define SEPARATOR2			'.'
 
 
-extern char*
-Malloc(
-    int s);
-
 extern int
 doConfigCheck(
     struct sockaddr_in * source_sockaddr_in,

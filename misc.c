@@ -72,13 +72,6 @@ Usage(void)
 }
 
 static void
-MallocFailed(void)
-{
-    (void) fprintf(stderr, "Memory allocation failed, exiting\n");
-    exit(1);
-}
-
-static void
 BadMalloc(
     int line)
 {
@@ -208,8 +201,7 @@ doInitNewRule(
       }
   }
 
-  if ((config_lineP = (struct config_line *)
-	  Malloc (sizeof(struct config_line))) == NULL)
+  if ((config_lineP = malloc (sizeof(struct config_line))) == NULL)
   {
     (void) fprintf (stderr, "malloc - config_lineP\n");
     return -1;
@@ -480,17 +472,6 @@ doProcessLine(
 /*
  * Public functions
  */
-char*
-Malloc(
-    int s)
-{
-    char *p = malloc(s);
-
-    if (!p)
-	MallocFailed();
-
-    return p;
-}
 
 int
 doConfigCheck(

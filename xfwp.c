@@ -77,7 +77,11 @@ main (
      * without making everything global!  See FWPprotocolSetupProc() for
      * the rest of what we are doing
      */
-    config_info = (struct config *) Malloc(sizeof(struct config));
+    if ((config_info = malloc(sizeof(struct config))) == NULL)
+    {
+	fprintf(stderr, "Memory allocation failed, exiting\n");
+	exit(1);
+    }
 
     global_data.config_info = config_info;
     global_data.nfds =  &nfds;
