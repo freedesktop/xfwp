@@ -94,6 +94,9 @@ default is 10.
 .B \-max_pm_conns \fInum_connections\fP
 Used to specify the maximum number of X server connections.  The
 default is 100.
+.TP 8
+.B \-version
+Used to print the program version and exit.
 .PP
 .SH DESCRIPTION
 The X firewall proxy (xfwp) is an application layer gateway proxy

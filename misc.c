@@ -71,7 +71,7 @@ Usage(void)
     (void) fprintf (stderr,
 		    "\t[-cdt <#secs>] [-pmport <port#>] [-config <path>]\\\n");
     (void) fprintf (stderr,
-		    "\t[-logfile <path>] [-loglevel <0|1>] [-verify]\n");
+		    "\t[-logfile <path>] [-loglevel <0|1>] [-verify] [-version]\n");
     exit (0);
 }
 
@@ -1343,6 +1343,11 @@ doProcessInputArgs (
           break;
         }
 	config_info->log_level = atoi(argv[arg_counter + 1]);
+      }
+      else if (!strcmp("-version", argv[arg_counter]))
+      {
+	puts(PACKAGE_STRING);
+	exit(0);
       }
       else
       {
