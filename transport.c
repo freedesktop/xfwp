@@ -31,6 +31,10 @@ X Window System is a trademark of The Open Group.
 */
 /* $XFree86: xc/programs/xfwp/transport.c,v 1.6 2001/07/29 21:23:20 tsi Exp $ */
 
+#ifdef HAVE_CONFIG_H
+# include "config.h"
+#endif
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
