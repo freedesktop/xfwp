@@ -1196,6 +1196,9 @@ doCheckServerList(
   return FAILURE;
 }
 
+/* Possible values for break_flag, to describe type of error */
+#define BREAK_MISSING_ARG	1
+#define BREAK_INVALID_ARG	2
 
 void
 doProcessInputArgs (
@@ -1233,7 +1236,7 @@ doProcessInputArgs (
       {
         if (arg_counter + 1 == argc)
 	{
-          break_flag = 1;
+          break_flag = BREAK_MISSING_ARG;
 	  break;
         }
 	config_info->pm_data_timeout = atoi(argv[arg_counter + 1]);
@@ -1242,7 +1245,7 @@ doProcessInputArgs (
       {
         if (arg_counter + 1 == argc)
         {
-	  break_flag = 1;
+	  break_flag = BREAK_MISSING_ARG;
           break;
         }
 	config_info->client_listen_timeout = atoi(argv[arg_counter + 1]);
@@ -1251,7 +1254,7 @@ doProcessInputArgs (
       {
         if (arg_counter + 1 == argc)
         {
-          break_flag = 1;
+          break_flag = BREAK_MISSING_ARG;
           break;
         }
 	config_info->client_data_timeout = atoi(argv[arg_counter + 1]);
@@ -1260,12 +1263,12 @@ doProcessInputArgs (
       {
         if (arg_counter + 1 == argc)
         {
-          break_flag = 1;
+          break_flag = BREAK_MISSING_ARG;
           break;
         }
 	if (atoi(argv[arg_counter + 1]) > 65536)
         {
-          break_flag = 1;
+          break_flag = BREAK_INVALID_ARG;
 	  break;
         }
 	if ((config_info->pm_listen_port = strdup(argv[arg_counter+1])) == NULL)
@@ -1278,7 +1281,7 @@ doProcessInputArgs (
       {
         if (arg_counter + 1 == argc)
         {
-          break_flag = 1;
+          break_flag = BREAK_MISSING_ARG;
           break;
         }
 	config_info->num_pm_conns = atoi(argv[arg_counter + 1]);
@@ -1287,7 +1290,7 @@ doProcessInputArgs (
       {
         if (arg_counter + 1 == argc)
         {
-          break_flag = 1;
+          break_flag = BREAK_MISSING_ARG;
           break;
         }
 	config_info->num_servers = atoi(argv[arg_counter + 1]);
@@ -1296,7 +1299,7 @@ doProcessInputArgs (
       {
         if (arg_counter + 1 == argc)
         {
-          break_flag = 1;
+          break_flag = BREAK_MISSING_ARG;
           break;
         }
         if ((config_info->config_file_path = strdup(argv[arg_counter+1]))
@@ -1314,7 +1317,7 @@ doProcessInputArgs (
       {
         if (arg_counter + 1 == argc)
         {
-          break_flag = 1;
+          break_flag = BREAK_MISSING_ARG;
           break;
         }
         if ((config_info->log_file_path = strdup(argv[arg_counter+1])) == NULL)
@@ -1325,22 +1328,40 @@ doProcessInputArgs (
       }
       else if (!strcmp("-loglevel", argv[arg_counter]))
       {
-        if ((arg_counter + 1 == argc) || (atoi(argv[arg_counter + 1]) > 1))
+        if (arg_counter + 1 == argc)
         {
-          break_flag = 1;
+          break_flag = BREAK_MISSING_ARG;
+          break;
+        }
+        if (atoi(argv[arg_counter + 1]) > 1)
+        {
+          break_flag = BREAK_INVALID_ARG;
           break;
         }
 	config_info->log_level = atoi(argv[arg_counter + 1]);
       }
       else
       {
-        (void) fprintf(stderr, "Unrecognized command line argument\n");
+	fprintf(stderr, "%s: Unrecognized command line argument '%s'\n",
+		argv[0], argv[arg_counter]);
 	Usage();
       }
     }
   }
   if (break_flag)
-      Usage();
+  {
+    switch (break_flag) {
+    case BREAK_MISSING_ARG:
+      fprintf(stderr, "%s: %s requires an argument\n",
+	      argv[0], argv[arg_counter]);
+      break;
+    case BREAK_INVALID_ARG:
+      fprintf(stderr, "%s: invalid argument '%s' for %s\n",
+	      argv[0], argv[arg_counter + 1], argv[arg_counter]);
+      break;
+    }
+    Usage();
+  }
 
   /*
    * Create space for the global connection arrays
